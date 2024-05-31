@@ -27,7 +27,7 @@ export const insertService = () => new Promise(async (resolve, reject) => {
                 labelCode,
                 address: item?.header?.address,
                 attributesId,
-                categoryCode: 'NTC',
+                categoryCode: 'NCT',
                 description: JSON.stringify(item?.mainContent?.content),
                 userId,
                 overviewId,
