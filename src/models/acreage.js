@@ -15,6 +15,7 @@ module.exports = (sequelize, DataTypes) => {
         }
     }
     Acreage.init({
+        order: DataTypes.INTEGER,
         code: DataTypes.STRING,
         value: DataTypes.STRING,
     }, {

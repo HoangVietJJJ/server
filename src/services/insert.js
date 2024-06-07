@@ -10,7 +10,7 @@ import generateCode from '../utils/generateCode'
 import { dataPrice, dataAcreage } from '../utils/data'
 import { getNumberFromString } from '../utils/common'
 
-const dataBody = chothuephongtro.body
+const dataBody = nhachothue.body
 
 
 const hashPassword = password => bcrypt.hashSync(password, bcrypt.genSaltSync(12))
@@ -36,13 +36,13 @@ export const insertService = () => new Promise(async (resolve, reject) => {
                 labelCode,
                 address: item?.header?.address,
                 attributesId,
-                categoryCode: 'CTPT',
+                categoryCode: 'NCT',
                 description: desc,
                 userId,
                 overviewId,
                 imagesId,
-                acreageCode: dataAcreage.find(acreage => acreage.max >= currentAcreage && acreage.min <= currentAcreage)?.code,
-                priceCode: dataPrice.find(acreage => acreage.max >= currentPrice && acreage.min <= currentPrice)?.code,
+                acreageCode: dataAcreage.find(acreage => acreage.max > currentAcreage && acreage.min <= currentAcreage)?.code,
+                priceCode: dataPrice.find(price => price.max > currentPrice && price.min <= currentPrice)?.code,
             })
             await db.Attribute.create({
                 id: attributesId,
@@ -83,5 +83,27 @@ export const insertService = () => new Promise(async (resolve, reject) => {
         resolve('Done')
     } catch (e) {
         reject(e)
+    }
+})
+
+export const createPricesAndAcreages = () => new Promise((resolve, reject) => {
+    try {
+        dataPrice.forEach(async (item, index) => {
+            await db.Price.create({
+                code: item.code,
+                value: item.value,
+                order: index + 1
+            })
+        })
+        dataAcreage.forEach(async (item, index) => {
+            await db.Acreage.create({
+                code: item.code,
+                value: item.value,
+                order: index + 1
+            })
+        })
+        resolve('OK')
+    } catch (err) {
+        reject(err)
     }
 })
