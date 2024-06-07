@@ -7,19 +7,28 @@ import chothuecanho from '../../data/chothuecanho.json'
 import nhachothue from '../../data/nhachothue.json'
 require('dotenv').config()
 import generateCode from '../utils/generateCode'
-const dataBody = nhachothue.body
+import { dataPrice, dataAcreage } from '../utils/data'
+import { getNumberFromString } from '../utils/common'
+
+const dataBody = chothuephongtro.body
+
 
 const hashPassword = password => bcrypt.hashSync(password, bcrypt.genSaltSync(12))
 
 export const insertService = () => new Promise(async (resolve, reject) => {
     try {
         dataBody.forEach(async (item) => {
+
             let postId = v4()
             let labelCode = generateCode(item?.header?.class?.classType)
             let attributesId = v4()
             let userId = v4()
             let imagesId = v4()
             let overviewId = v4()
+            let desc = JSON.stringify(item?.mainContent?.content)
+            let currentAcreage = getNumberFromString(item?.header?.attributes?.acreage)
+            let currentPrice = getNumberFromString(item?.header?.attributes?.price)
+
             await db.Post.create({
                 id: postId,
                 title: item?.header?.title,
@@ -27,11 +36,13 @@ export const insertService = () => new Promise(async (resolve, reject) => {
                 labelCode,
                 address: item?.header?.address,
                 attributesId,
-                categoryCode: 'NCT',
-                description: JSON.stringify(item?.mainContent?.content),
+                categoryCode: 'CTPT',
+                description: desc,
                 userId,
                 overviewId,
-                imagesId
+                imagesId,
+                acreageCode: dataAcreage.find(acreage => acreage.max >= currentAcreage && acreage.min <= currentAcreage)?.code,
+                priceCode: dataPrice.find(acreage => acreage.max >= currentPrice && acreage.min <= currentPrice)?.code,
             })
             await db.Attribute.create({
                 id: attributesId,
