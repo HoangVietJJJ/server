@@ -1,5 +1,5 @@
 import db from '../models'
-
+// GET ALL PRICES
 export const getPricesService = () => new Promise(async (resolve, reject) => {
     try {
         const response = await db.Price.findAll({
@@ -16,3 +16,4 @@ export const getPricesService = () => new Promise(async (resolve, reject) => {
         reject(e)
     }
 })
+

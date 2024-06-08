@@ -1,5 +1,6 @@
 import { raw } from 'express'
 import db from '../models'
+import { where } from 'sequelize'
 require('dotenv').config()
 
 export const getPostsService = () => new Promise(async (resolve, reject) => {
@@ -24,12 +25,13 @@ export const getPostsService = () => new Promise(async (resolve, reject) => {
     }
 })
 
-export const getPostsLimitService = (offset) => new Promise(async (resolve, reject) => {
+export const getPostsLimitService = (page, query) => new Promise(async (resolve, reject) => {
     try {
         const response = await db.Post.findAndCountAll({
+            where: query,
             raw: true,
             nest: true,
-            offset: offset * (+process.env.LIMIT) || 0,
+            offset: page * (+process.env.LIMIT) || 0,
             limit: +process.env.LIMIT,
             include: [
                 { model: db.Image, as: 'images', attributes: ['image'] },
