@@ -13,10 +13,10 @@ export const getPosts = async (req, res) => {
 }
 
 export const getPostsLimitController = async (req, res) => {
-    const { offset, ...query } = req.query
+    const { page, ...query } = req.query
     // console.log(req.query);
     try {
-        const response = await postService.getPostsLimitService(offset, query)
+        const response = await postService.getPostsLimitService(page, query)
         return res.status(200).json(response)
     } catch (e) {
         res.status(500).json({

@@ -10,7 +10,7 @@ import generateCode from '../utils/generateCode'
 import { dataPrice, dataAcreage } from '../utils/data'
 import { getNumberFromString } from '../utils/common'
 
-const dataBody = chothuephongtro.body
+const dataBody = chothuematbang.body
 
 
 const hashPassword = password => bcrypt.hashSync(password, bcrypt.genSaltSync(12))
@@ -36,7 +36,7 @@ export const insertService = () => new Promise(async (resolve, reject) => {
                 labelCode,
                 address: item?.header?.address,
                 attributesId,
-                categoryCode: 'CTPT',
+                categoryCode: 'CTMB',
                 description: desc,
                 userId,
                 overviewId,
