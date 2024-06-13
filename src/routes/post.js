@@ -5,6 +5,7 @@ const router = express.Router()
 
 router.get('/all', postController.getPosts)
 router.get('/limit', postController.getPostsLimitController)
+router.get('/new-post', postController.getNewPostController)
 
 
 export default router 
